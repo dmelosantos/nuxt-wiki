@@ -6,3 +6,8 @@ jspm_packages
 .nuxt
 
 .idea
+.vscode
+coverage
+build
+dist
+*.sqlite

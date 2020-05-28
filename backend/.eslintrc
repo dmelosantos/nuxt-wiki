@@ -1,0 +1,12 @@
+{
+  "extends": "airbnb-base",
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "plugins": [],
+  "rules": {
+    "max-len": ["warn", 200],
+    "no-plusplus": "warn"
+  }
+}
