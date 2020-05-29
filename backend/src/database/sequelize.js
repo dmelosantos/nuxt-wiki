@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: 'database.sqlite',
-  logging: true,
+  dialect: process.env.SQL_DIALECT,
+  storage: process.env.SQL_STORAGE_PATH,
+  logging: (process.env.SEQUELIZE_LOGGING === 'true'),
   options: {
     define: {},
   },

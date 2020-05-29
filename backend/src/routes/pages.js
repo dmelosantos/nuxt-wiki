@@ -6,6 +6,7 @@ const Ajv = require('ajv');
 const { sequelize } = require('../database/sequelize');
 const { toExpressError } = require('../commons/utils');
 const Page = require('../models/Page');
+const PageHistory = require('../models/PageHistory');
 
 const router = express.Router();
 
@@ -69,7 +70,10 @@ router.post('/', asyncHandler(async (req, res) => {
     try {
       transaction = await sequelize.transaction();
 
-      const page = await Page.create(req.body, { transaction, returning: true });
+      const page = await Page.create(req.body, { transaction, returning: true })
+      // add a page history so we can diff it
+      const pageHistoryContent = { ...req.body, previousId: page.id };
+      await PageHistory.create(pageHistoryContent, { transaction, returning: true })
 
       // commit
       await transaction.commit();
