@@ -1,16 +1,26 @@
 <template>
-  <div>
-    <h1>Main Page</h1>
-    <h3>Random dog of the day:</h3>
-    <img :src="dog.url" alt="">
-  </div>
+    <v-row>
+        <v-col lg="12">
+            <v-row>
+                <v-col lg="10"></v-col>
+                <v-col lg="1">Edit</v-col>
+                <v-col lg="1">View History</v-col>
+            </v-row>
+        </v-col>
+        <v-col lg="12">
+            <v-layeout class="pl-3" v-html="page.name"></v-layeout>
+        </v-col>
+        <v-col lg="12">
+            <v-layout class="pl-3" v-html="page.body"></v-layout>
+        </v-col>
+    </v-row>
 </template>
 
 <script>
 export default {
   async asyncData({ params, $http }) {
-    const dogs = await $http.$get("https://api.thedogapi.com/v1/images/search?limit=1");
-    return { dog: dogs[0] };
+    const mainPage = await $http.$get("http://localhost:8081/pages/1");
+    return { page: mainPage };
   }
 };
 </script>

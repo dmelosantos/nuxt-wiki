@@ -1,13 +1,8 @@
 <template>
     <v-app light>
         <navbar/>
-        <v-content>
-            <v-container
-                    class="fill-height"
-                    fluid
-            >
-                <nuxt/>
-            </v-container>
+        <v-content class="fill-height pt-0" fluid>
+            <nuxt/>
         </v-content>
         <v-footer>
             <v-spacer></v-spacer>

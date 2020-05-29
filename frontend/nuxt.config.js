@@ -18,7 +18,7 @@ module.exports = {
   ],
 
   http: {
-    baseURL: 'https://api.thedogapi.com/v1/',
+    baseURL: 'http://localhost:8081/',
   },
 
   render: {
