@@ -26,6 +26,24 @@ router.get('/', asyncHandler(async (req, res) => {
 }));
 
 /**
+ * List page history
+ */
+router.get('/history/:id', asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!isEmpty(id)) {
+    const pages = await PageHistory.findAll({
+      where: {
+        previousId: id,
+      },
+    });
+    res.json(pages);
+  } else {
+    toExpressError(res, 'Id is required');
+  }
+}));
+
+/**
  * Get page by id
  */
 router.get('/:id', asyncHandler(async (req, res) => {
@@ -58,6 +76,9 @@ router.get('/byName/:name', asyncHandler(async (req, res) => {
   }
 }));
 
+/**
+ * Search page by term
+ */
 router.get('/search/:term', asyncHandler(async (req, res) => {
   const { term } = req.params;
 

@@ -21,7 +21,6 @@
 
     async asyncData({params, $http}) {
       const pages = await $http.$get(`http://localhost:8081/pages/search/${params.term}`);
-      console.log(pages)
       return {
         pages
       };
