@@ -3,6 +3,7 @@ const asyncHandler = require('express-async-handler');
 const { isEmpty } = require('ramda');
 const Ajv = require('ajv');
 
+const { Op } = require('sequelize');
 const { sequelize } = require('../database/sequelize');
 const { toExpressError } = require('../commons/utils');
 const Page = require('../models/Page');
@@ -49,6 +50,32 @@ router.get('/byName/:name', asyncHandler(async (req, res) => {
     const pages = await Page.findAll({
       where: {
         name,
+      },
+    });
+    res.json(pages);
+  } else {
+    toExpressError(res, 'Name is required');
+  }
+}));
+
+router.get('/search/:term', asyncHandler(async (req, res) => {
+  const { term } = req.params;
+
+  if (!isEmpty(term)) {
+    const pages = await Page.findAll({
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${term}%`,
+            },
+          },
+          {
+            body: {
+              [Op.like]: `%${term}%`,
+            },
+          },
+        ],
       },
     });
     res.json(pages);
