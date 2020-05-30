@@ -1,6 +1,6 @@
 const app = require('./app');
 
-const server = app.listen(8081, () => {
+const server = app.listen(process.env.HTTP_PORT, () => {
   const host = server.address().address;
   const { port } = server.address();
 

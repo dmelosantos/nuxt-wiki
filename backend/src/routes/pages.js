@@ -70,10 +70,10 @@ router.post('/', asyncHandler(async (req, res) => {
     try {
       transaction = await sequelize.transaction();
 
-      const page = await Page.create(req.body, { transaction, returning: true })
+      const page = await Page.create(req.body, { transaction, returning: true });
       // add a page history so we can diff it
       const pageHistoryContent = { ...req.body, previousId: page.id };
-      await PageHistory.create(pageHistoryContent, { transaction, returning: true })
+      await PageHistory.create(pageHistoryContent, { transaction, returning: true });
 
       // commit
       await transaction.commit();
@@ -110,6 +110,10 @@ router.put('/:id', asyncHandler(async (req, res) => {
           id,
         },
       });
+
+      // add a page history so we can diff it
+      const pageHistoryContent = { ...req.body, previousId: id };
+      await PageHistory.create(pageHistoryContent, { transaction, returning: true });
 
       // commit
       await transaction.commit();

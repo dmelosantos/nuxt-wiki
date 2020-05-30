@@ -15,7 +15,10 @@ module.exports = {
   modules: [
     '@nuxt/http',
     '@nuxtjs/vuetify',
+    '@nuxtjs/axios',
   ],
+
+  plugins: [{src:'@/plugins/global.js', ssr: false}],
 
   http: {
     baseURL: 'http://localhost:8081/',
@@ -26,6 +29,7 @@ module.exports = {
   },
 
   vuetify: {
+    treeShake: true,
     defaultAssets: {
       font: true,
       icons: 'mdi'

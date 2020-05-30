@@ -5,11 +5,10 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <h3>Edit</h3>
+                            <h3>Create a new page</h3>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-alert v-if="message && message !== ''" :color="messageType" type="success">
-                                {{ message }}
+                            <v-alert v-if="message && message !== ''" color="green" type="success" v-html="message">
                             </v-alert>
                         </v-col>
                         <v-col cols="12" md="12" align="right">
@@ -27,16 +26,6 @@
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-text-field
-                                    v-model="reason"
-                                    :rules="reasonRules"
-                                    :counter="255"
-                                    label="Describe the Change"
-                                    required
-                                    :disabled="isLoading"
-                            ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12">
                             <MarkdownEditor class="ml-auto mr-auto" :initialValue="body"
                                             :disabled="isLoading"></MarkdownEditor>
                         </v-col>
@@ -49,12 +38,10 @@
 
 <script>
   export default {
-    name: 'edit',
+    name: 'create',
 
     async asyncData({ params, $http }) {
-      const pageContent = await $http.$get(`http://localhost:8081/pages/${params.id}`);
-      pageContent.reason = '';
-      return { ...pageContent };
+      return {};
     },
 
     data: () => ({
@@ -66,12 +53,8 @@
       nameRules: [
         v => !!v || 'Name is required',
       ],
-      reasonRules: [
-        v => !!v || 'Describing the change is required',
-      ],
       lazy: false,
       message: '',
-      messageType: '',
       isLoading: false,
     }),
 
@@ -83,18 +66,17 @@
         if(this.validate()) {
           try {
             this.isLoading = true;
-            await this.$axios.put(`http://localhost:8081/pages/${this.id}`, {
+            const response = await this.$axios.post('http://localhost:8081/pages/', {
                 name: this.name,
                 body: this.body,
                 reason: this.reason,
             });
+
             this.isLoading = false;
-            this.message = 'Change made to page successfully saved!';
-            this.messageType = 'green';
+            this.message = `Page created successfully! <a href="/pages/${response.data.id}">Access it here</a>`;
           } catch(error) {
             this.isLoading = false;
             this.message = error.message;
-            this.messageType = 'red';
           }
         }
       }

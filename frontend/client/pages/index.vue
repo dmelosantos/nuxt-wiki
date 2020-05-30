@@ -3,8 +3,8 @@
         <v-col lg="12">
             <v-row>
                 <v-col lg="10"></v-col>
-                <v-col lg="1">Edit</v-col>
-                <v-col lg="1">View History</v-col>
+                <v-col lg="1"><a href="/page/edit/1">Edit</a></v-col>
+                <v-col lg="1"><a href="/page/history/1">View History</a></v-col>
             </v-row>
         </v-col>
         <v-col lg="12">

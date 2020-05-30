@@ -13,6 +13,10 @@ PageHistory.init({
   body: {
     type: Sequelize.STRING,
   },
+  reason: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
   previousId: {
     type: Sequelize.INTEGER,
   },
