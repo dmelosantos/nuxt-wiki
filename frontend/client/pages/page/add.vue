@@ -38,7 +38,7 @@
 
 <script>
   export default {
-    name: 'create',
+    name: 'PageCreate',
 
     async asyncData({ params, $http }) {
       return {};

@@ -37,11 +37,8 @@
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <MarkdownEditor ref="markdownEditor"
-                                    class="ml-auto mr-auto"
-                                            :initialValue="body"
-                                            :disabled="isLoading" @change="onEditorChange"
-                            ></MarkdownEditor>
+                            <MarkdownEditor class="ml-auto mr-auto" :initialValue="body"
+                                            :disabled="isLoading"></MarkdownEditor>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -64,6 +61,7 @@
       valid: true,
       id: '',
       name: '',
+      body: '',
       reason: '',
       nameRules: [
         v => !!v || 'Name is required',
@@ -78,9 +76,6 @@
     }),
 
     methods: {
-      onEditorChange() {
-        this.body = this.$refs.markdownEditor.invoke('getMarkdown');
-      },
       validate () {
         return this.$refs.form.validate()
       },
