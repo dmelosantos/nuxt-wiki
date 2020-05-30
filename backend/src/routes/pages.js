@@ -44,6 +44,37 @@ router.get('/history/:id', asyncHandler(async (req, res) => {
 }));
 
 /**
+ * List page history
+ */
+router.get('/compare/:originalId/:historyId', asyncHandler(async (req, res) => {
+  const { originalId, historyId } = req.params;
+
+  if (!isEmpty(originalId) && !isEmpty(historyId)) {
+    const historyPage = await PageHistory.findOne({
+      where: {
+        [Op.and]: [
+          {
+            previousId: originalId,
+          },
+          {
+            id: historyId,
+          },
+        ],
+      },
+    });
+
+    const originalPage = await Page.findOne({
+      where: {
+        id: originalId,
+      },
+    });
+    res.json({ historyPage, originalPage });
+  } else {
+    toExpressError(res, 'Original Id and History Id are required');
+  }
+}));
+
+/**
  * Get page by id
  */
 router.get('/:id', asyncHandler(async (req, res) => {
@@ -152,16 +183,24 @@ router.put('/:id', asyncHandler(async (req, res) => {
     try {
       transaction = await sequelize.transaction();
 
+      // get the old page content and store on history for comparison
+      // add a page history so we can diff it
+      const oldPage = await Page.findOne({
+        where: {
+          id,
+        },
+      });
+      const oldPageJson = oldPage.toJSON();
+      const pageHistoryContent = { body: oldPageJson.body, name: oldPageJson.name, previousId: id };
+      await PageHistory.create(pageHistoryContent, { transaction, returning: true });
+
+      // update the new page
       await Page.update(req.body, {
         transaction,
         where: {
           id,
         },
       });
-
-      // add a page history so we can diff it
-      const pageHistoryContent = { ...req.body, previousId: id };
-      await PageHistory.create(pageHistoryContent, { transaction, returning: true });
 
       // commit
       await transaction.commit();

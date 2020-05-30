@@ -12,7 +12,7 @@
             <tr v-for="item in pages" :key="item.id">
                 <td>{{ item.reason || 'No Changelog Entry' }}</td>
                 <td>{{ item.createdAt }}</td>
-                <td><nuxt-link :to="`/page/diff/${item.id}`">Diff</nuxt-link></td>
+                <td><nuxt-link :to="`/page/diff/${item.previousId}/${item.id}`">Diff</nuxt-link></td>
             </tr>
             </tbody>
         </template>
@@ -25,7 +25,6 @@
 
     async asyncData({params, $http}) {
       const pages = await $http.$get(`http://localhost:8081/pages/history/${params.id}`);
-      console.log(pages)
       return {
         pages
       };
